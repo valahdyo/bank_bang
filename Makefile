@@ -1,6 +1,9 @@
 postgres:
 	docker run --name postgres15 -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -d postgres:15-alpine
 
+rundb:
+	docker start postgres15	
+
 createdb:
 	docker exec -it postgres15 createdb --username=root --owner=root bank_simple
 
@@ -19,4 +22,7 @@ sqlc:
 test:
 	go test -v ./...
 
-.PHONY: createdb dropdb postgres migrateup migratedown sqlc test
+server:
+	go run main.go 	
+
+.PHONY: rundb createdb dropdb postgres migrateup migratedown sqlc test server
